@@ -7,7 +7,7 @@ setup(
 	description = "Statistics Package",
 	author = "Justin Max",
 	author_email = "jtm508@gmail.com",
-	package=["jstat"]
+	package=["jstat"],
 	package_dir = {
 		"jstat":"jstat"
 		},
