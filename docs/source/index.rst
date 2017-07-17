@@ -1,0 +1,20 @@
+.. jstat documentation master file, created by
+   sphinx-quickstart on Sun Jul 16 21:04:15 2017.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to jstat's documentation!
+=================================
+This is a test.
+
+.. toctree::
+   :maxdepth: 1
+   
+   J Stat Documentation <modules>
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
