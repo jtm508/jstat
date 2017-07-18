@@ -90,6 +90,7 @@
             
             
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../fep.html">Fishers Exact P-Values</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">J Stat Documentation</a></li>
 </ul>
 
@@ -155,68 +156,151 @@
            <div itemprop="articleBody">
             
   <h1>Source code for jstat.fisher_exact</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">comb</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">product</span>
-
 
 <span class="c1">#To do:</span>
 <span class="c1"># Add more test statistics</span>
 
-<div class="viewcode-block" id="t_mean_diff"><a class="viewcode-back" href="../../jstat.fisher_exact.html#jstat.fisher_exact.t_mean_diff">[docs]</a><span class="k">def</span> <span class="nf">t_mean_diff</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">W</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="n">Y_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">W</span><span class="o">==</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">Y_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">W</span><span class="o">==</span><span class="mi">0</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Y_t</span> <span class="o">-</span> <span class="n">Y_c</span><span class="p">)</span></div>
+<div class="viewcode-block" id="t_mean_diff"><a class="viewcode-back" href="../../jstat.fisher_exact.html#jstat.fisher_exact.t_mean_diff">[docs]</a><span class="k">def</span> <span class="nf">t_mean_diff</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">W</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Computes a test statistic for the sharp null hypothesis of no treatment effect based on differences in means.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	Y : numpy array</span>
+<span class="sd">		Vector of outcomes.</span>
+
+<span class="sd">	W : numpy array</span>
+<span class="sd">		Assignment vector.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	T : float</span>
+<span class="sd">		Test statistic for difference in means under the sharp null hypothesis.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="n">Y_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">W</span><span class="o">==</span><span class="mi">1</span><span class="p">])</span>
+	<span class="n">Y_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">W</span><span class="o">==</span><span class="mi">0</span><span class="p">])</span>
+	<span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Y_t</span> <span class="o">-</span> <span class="n">Y_c</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">T</span></div>
 	
-<div class="viewcode-block" id="t_median_diff"><a class="viewcode-back" href="../../jstat.fisher_exact.html#jstat.fisher_exact.t_median_diff">[docs]</a><span class="k">def</span> <span class="nf">t_median_diff</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">W</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="n">Y_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">W</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">c</span><span class="p">)</span>
-    <span class="n">Y_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">W</span><span class="o">==</span><span class="mi">0</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Y_t</span> <span class="o">-</span> <span class="n">Y_c</span><span class="p">)</span></div>
+<div class="viewcode-block" id="t_median_diff"><a class="viewcode-back" href="../../jstat.fisher_exact.html#jstat.fisher_exact.t_median_diff">[docs]</a><span class="k">def</span> <span class="nf">t_median_diff</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">W</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Computes a test statistic for the sharp null hypothesis of no treatment effect based on differences in medians.</span>
+<span class="sd">	</span>
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	Y : numpy array</span>
+<span class="sd">		Vector of outcomes.</span>
+<span class="sd">	</span>
+<span class="sd">	W : numpy array</span>
+<span class="sd">		Assignment vector.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	T : float</span>
+<span class="sd">		Test statistic for difference in medians under the sharp null hypothesis.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="n">Y_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">W</span><span class="o">==</span><span class="mi">1</span><span class="p">])</span>
+	<span class="n">Y_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">W</span><span class="o">==</span><span class="mi">0</span><span class="p">])</span>
+	<span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Y_t</span> <span class="o">-</span> <span class="n">Y_c</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">T</span></div>
 	
-<div class="viewcode-block" id="fisher_exact_p"><a class="viewcode-back" href="../../jstat.fisher_exact.html#jstat.fisher_exact.fisher_exact_p">[docs]</a><span class="k">def</span> <span class="nf">fisher_exact_p</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">W</span><span class="p">,</span><span class="n">T_function</span><span class="o">=</span><span class="n">t_mean_diff</span><span class="p">,</span><span class="n">numw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="c1">#number of units receiving treatment</span>
-    <span class="n">sumw</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
-    <span class="c1">#length of assignment vector (e.g. sample size)</span>
-    <span class="n">lenw</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
-    
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">numw</span><span class="p">:</span>
-        <span class="c1">#number of possible assignment vectors</span>
-        <span class="n">numw</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">comb</span><span class="p">(</span><span class="n">lenw</span><span class="p">,</span><span class="n">sumw</span><span class="p">))</span>
-    
-        <span class="c1">#generator of assignment vectors</span>
-        <span class="n">assignments</span> <span class="o">=</span> <span class="n">product</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">repeat</span><span class="o">=</span><span class="n">lenw</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">assignments</span> <span class="o">=</span> <span class="n">random_assignments</span><span class="p">(</span><span class="n">lenw</span><span class="p">,</span><span class="n">sumw</span><span class="p">,</span><span class="n">numw</span><span class="p">,</span><span class="n">force_assignment</span><span class="o">=</span><span class="n">W</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Maximum standard error for p_value is </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">numw</span><span class="p">))))</span>
-            
-    
-    <span class="c1">#initialize storage</span>
-    <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">numw</span><span class="p">)</span>
-    
-    <span class="c1">#calculate t_stat for each assignment vector</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">assignments</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">==</span><span class="n">sumw</span><span class="p">:</span> <span class="c1">#only use assignment vectors with correct treatment/control sizes</span>
-            <span class="c1">#save the index of the actual assignment vector</span>
-            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">W</span><span class="p">):</span>
-                <span class="n">W_index</span> <span class="o">=</span> <span class="n">i</span>
-            <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">T_function</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">w</span><span class="p">),</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
-    
-    <span class="c1">#T statistic for true assignment vector</span>
-    <span class="n">T_true</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="n">W_index</span><span class="p">]</span>
-    
-    <span class="c1">#p_value</span>
-    <span class="n">p</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">T</span><span class="o">&gt;=</span><span class="n">T_true</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-    
-    <span class="k">return</span><span class="p">(</span><span class="n">p</span><span class="p">)</span></div>
+<div class="viewcode-block" id="fisher_exact_p"><a class="viewcode-back" href="../../jstat.fisher_exact.html#jstat.fisher_exact.fisher_exact_p">[docs]</a><span class="k">def</span> <span class="nf">fisher_exact_p</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">W</span><span class="p">,</span><span class="n">T_function</span><span class="o">=</span><span class="n">t_mean_diff</span><span class="p">,</span><span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">numw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Computes a Fisher Exact P-value according to the test statistic defined by T_function</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	Y : numpy array</span>
+<span class="sd">		Vector of outcomes.</span>
+
+<span class="sd">	W : numpy array</span>
+<span class="sd">		Assignment vector.</span>
+
+<span class="sd">	T_function : python function</span>
+<span class="sd">		Function to compute a test statistic.</span>
+<span class="sd">		</span>
+<span class="sd">	force : boolean</span>
+<span class="sd">		Set to True in order to force an exact p-value computation with over 1 million assignment vectors.</span>
+
+<span class="sd">	numw : positive integer, optional</span>
+<span class="sd">		Approximate the p-value based on a random sample of numw possible assignment vectors. use if (N_c+N_t)Choose(N_t) is large.</span>
+
+<span class="sd">	**kwargs : variable types</span>
+<span class="sd">		Arguments to pass into T_function.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	p : float</span>
+<span class="sd">		Fisher Exact P-Value.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="c1">#number of units receiving treatment</span>
+	<span class="n">sumw</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+	<span class="c1">#length of assignment vector (e.g. sample size)</span>
+	<span class="n">lenw</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+	
+	
+
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">numw</span><span class="p">:</span>
+		<span class="c1">#number of possible assignment vectors</span>
+		<span class="n">numw</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">comb</span><span class="p">(</span><span class="n">lenw</span><span class="p">,</span><span class="n">sumw</span><span class="p">))</span>
+		<span class="k">if</span> <span class="n">force</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+			<span class="k">assert</span> <span class="n">numw</span> <span class="o">&lt;</span> <span class="mi">1000000</span><span class="p">,</span> <span class="s2">&quot;The number of assignment vectors is over one million. Continuing may cause you to run out of memory. Use the option force=True to continue. Use the numw option to approximate the p-value&quot;</span>
+
+		<span class="c1">#generator of assignment vectors</span>
+		<span class="n">assignments</span> <span class="o">=</span> <span class="n">product</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">repeat</span><span class="o">=</span><span class="n">lenw</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">assignments</span> <span class="o">=</span> <span class="n">random_assignments</span><span class="p">(</span><span class="n">lenw</span><span class="p">,</span><span class="n">sumw</span><span class="p">,</span><span class="n">numw</span><span class="p">,</span><span class="n">force_assignment</span><span class="o">=</span><span class="n">W</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Maximum standard error for p_value is </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">numw</span><span class="p">))))</span>
+
+
+	<span class="c1">#initialize storage</span>
+	<span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">numw</span><span class="p">)</span>
+
+	<span class="c1">#calculate t_stat for each assignment vector</span>
+	<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+	<span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">assignments</span><span class="p">):</span>
+		<span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">==</span><span class="n">sumw</span><span class="p">:</span> <span class="c1">#only use assignment vectors with correct treatment/control sizes</span>
+			<span class="c1">#save the index of the actual assignment vector</span>
+			<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">W</span><span class="p">):</span>
+				<span class="n">W_index</span> <span class="o">=</span> <span class="n">i</span>
+			<span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">T_function</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">w</span><span class="p">),</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+			<span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+
+	<span class="c1">#T statistic for true assignment vector</span>
+	<span class="n">T_true</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="n">W_index</span><span class="p">]</span>
+
+	<span class="c1">#p_value</span>
+	<span class="n">p</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">T</span><span class="o">&gt;=</span><span class="n">T_true</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+	<span class="k">return</span><span class="p">(</span><span class="n">p</span><span class="p">)</span></div>
 	
 <div class="viewcode-block" id="random_assignments"><a class="viewcode-back" href="../../jstat.fisher_exact.html#jstat.fisher_exact.random_assignments">[docs]</a><span class="k">def</span> <span class="nf">random_assignments</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">K</span><span class="p">,</span><span class="n">rep</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">force_assignment</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Samples assignment vectors without replacement to calculate Fisher Exact P-Values.</span>
+<span class="sd">	</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    N : Length of assignments vecotr</span>
-<span class="sd">    K : Number of treated units</span>
+<span class="sd">    N : Positive Integer</span>
+<span class="sd">	Length of assignments vector.</span>
+<span class="sd">		</span>
+<span class="sd">    K : Positive Integer</span>
+<span class="sd">	Number of treated units.</span>
+<span class="sd">		</span>
+<span class="sd">	rep : Positive Integer</span>
+<span class="sd">	Number of assignment vectors to calculate.</span>
+<span class="sd">		</span>
+<span class="sd">	force_assignment : list</span>
+<span class="sd">	If used, this will the function will ensure force_assignment is in the list of sampled vectors.</span>
+<span class="sd">	This is meant to take on the value of the true assignment vector.</span>
+<span class="sd">		</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	W : numpy array</span>
+<span class="sd">	Each row is a distinct assignment vector drawn randomly from the population of assignment vectors.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="c1">#initialize assignment matrix</span>
     <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">rep</span><span class="p">,</span><span class="n">N</span><span class="p">],</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
@@ -230,7 +314,8 @@
             <span class="n">w</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">),</span><span class="n">K</span><span class="p">,</span><span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>
         <span class="n">w_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span>
         <span class="n">W</span><span class="p">[[</span><span class="n">i</span><span class="p">,</span><span class="n">w</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
-        
+    
+	<span class="c1">#force the actual assignment vector into a list.</span>
     <span class="k">if</span> <span class="n">force_assignment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">force_assignment</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">w_list</span><span class="p">:</span>
         <span class="n">W</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">force_assignment</span>
         
