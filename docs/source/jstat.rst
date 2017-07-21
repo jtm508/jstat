@@ -8,6 +8,7 @@ Submodules
 
    jstat.data
    jstat.fisher_exact
+   jstat.neyman
 
 Module contents
 ---------------

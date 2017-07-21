@@ -168,7 +168,7 @@ The functions below allow the user to estimate the average treatment effect, est
 confidence intervals, and test hypotheses.</p>
 <div class="section" id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
-<p><code class="xref py py-func docutils literal"><span class="pre">jstat.neyman.randomized_ate()</span></code>:</p>
+<p><a class="reference internal" href="jstat.neyman.html#jstat.neyman.randomized_ate" title="jstat.neyman.randomized_ate"><code class="xref py py-func docutils literal"><span class="pre">jstat.neyman.randomized_ate()</span></code></a>:</p>
 <blockquote>
 <div><p>This function returns an unbiased estimate of the average treatment effect: <span class="math">\(\bar{Y}_{t}^{\text{obs}}-\bar{Y}_{c}^{\text{obs}}\)</span>.</p>
 <p>The sampling variance of this estimator is equal to <span class="math">\(\frac{S_{c}^{2}}{N_{c}}+\frac{S_{t}^{2}}{N_{t}}-\frac{S_{tc}^{2}}{N}\)</span>
@@ -176,27 +176,27 @@ where <span class="math">\(S_{c}^{2}\)</span> and <span class="math">\(S_{t}^{2}
 <span class="math">\(S_{tc}^{2}\)</span> is the variance of the unit-level treatment effects. The challenge is that <span class="math">\(S_{tc}^{2}\)</span> is
 impossible to estimate with data from the experiment. The functions below attempt to solve this problem.</p>
 </div></blockquote>
-<p><code class="xref py py-func docutils literal"><span class="pre">jstat.neyman.sampling_variance_neyman()</span></code>:</p>
+<p><a class="reference internal" href="jstat.neyman.html#jstat.neyman.sampling_variance_neyman" title="jstat.neyman.sampling_variance_neyman"><code class="xref py py-func docutils literal"><span class="pre">jstat.neyman.sampling_variance_neyman()</span></code></a>:</p>
 <blockquote>
 <div><p>Under constant treatment effects, this function produces an ubiased estimator of the sampling variance for the sample
 average treatment effect. With heterogeneous treatment effects, the estimate will overstate the variance.</p>
 <p>However, this estimator is generally used because it provides an unbiased estimate of the population level average treatment
 effect, which is typically what the researcher is after.</p>
 </div></blockquote>
-<p><code class="xref py py-func docutils literal"><span class="pre">jstat.neyman.ate_sampling_variance_correlated()</span></code>:</p>
+<p><a class="reference internal" href="jstat.neyman.html#jstat.neyman.ate_sampling_variance_correlated" title="jstat.neyman.ate_sampling_variance_correlated"><code class="xref py py-func docutils literal"><span class="pre">jstat.neyman.ate_sampling_variance_correlated()</span></code></a>:</p>
 <blockquote>
 <div>If the potential outcomes are perfectly correlated, this provides an unbiased etimate of the samplig variance. If the
 correlation is not perfect, the variance is again upwardly biased, but less so than sampling_variance_neyman().</div></blockquote>
-<p><code class="xref py py-func docutils literal"><span class="pre">jstat.neyman.cte_sampling_variance()</span></code>:</p>
+<p><a class="reference internal" href="jstat.neyman.html#jstat.neyman.cte_sampling_variance" title="jstat.neyman.cte_sampling_variance"><code class="xref py py-func docutils literal"><span class="pre">jstat.neyman.cte_sampling_variance()</span></code></a>:</p>
 <blockquote>
 <div>This estimator exploits the fact that <span class="math">\(S_{t}^{2}=S_{c}^{2}\)</span> if the treatment effect is constant. If treatment effects
 are constant, this estimator is preferred to the previous two. Otherwise it should not be used.</div></blockquote>
-<p><code class="xref py py-func docutils literal"><span class="pre">jstat.neyman.ate_confidence_interval()</span></code>:</p>
+<p><a class="reference internal" href="jstat.neyman.html#jstat.neyman.ate_confidence_interval" title="jstat.neyman.ate_confidence_interval"><code class="xref py py-func docutils literal"><span class="pre">jstat.neyman.ate_confidence_interval()</span></code></a>:</p>
 <blockquote>
 <div>This function produces a <span class="math">\(1-\alpha\)</span> % confidence interval for the average treatment effect estimate. The user must
 supply an estimate of the sampling variance obtained from one of the previous functions. The confidence interval is
 justified in large samples by the Central Limit Theorem, but is fairly reliable in small samples as well.</div></blockquote>
-<p><code class="xref py py-func docutils literal"><span class="pre">jstat.neyman.t_stat()</span></code>:</p>
+<p><a class="reference internal" href="jstat.neyman.html#jstat.neyman.t_stat" title="jstat.neyman.t_stat"><code class="xref py py-func docutils literal"><span class="pre">jstat.neyman.t_stat()</span></code></a>:</p>
 <blockquote>
 <div>The t-statistic produced by this function tests the null hypothesis that the average treatment effect is equal to zero.
 The user must supply a sampling variance from one of the previous functions. A p-value is also returned.</div></blockquote>
