@@ -1,0 +1,279 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Neyman’s Repeated Sampling Approach &mdash; jstat 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="jstat 0.1 documentation" href="index.html"/>
+        <link rel="next" title="jstat" href="modules.html"/>
+        <link rel="prev" title="Fisher Exact P-Values" href="fep.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> jstat
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="fep.html">Fishers Exact P-Values for Randomized Experiments</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Neyman&#8217;s Approach to Randomized Experiments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">J Stat Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">jstat</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Neyman&#8217;s Repeated Sampling Approach</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/neyman.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="neyman-s-repeated-sampling-approach">
+<h1>Neyman&#8217;s Repeated Sampling Approach<a class="headerlink" href="#neyman-s-repeated-sampling-approach" title="Permalink to this headline">¶</a></h1>
+<p>This submodule is based on Chapter 6 of <a class="reference external" href="https://www.amazon.com/Causal-Inference-Statistics-Biomedical-Sciences/dp/0521885884">Causal Inference For Statistics, Social, And Biomedical Sciences</a>.</p>
+<p>Neyman&#8217;s approach to randomized experiments aims to estimate the average treatment effect: <span class="math">\(E[Y_{i}(1)-Y_{i}(0)]\)</span>.
+The functions below allow the user to estimate the average treatment effect, estimate the sampling variance, construct
+confidence intervals, and test hypotheses.</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<p><code class="xref py py-func docutils literal"><span class="pre">jstat.neyman.randomized_ate()</span></code>:</p>
+<blockquote>
+<div><p>This function returns an unbiased estimate of the average treatment effect: <span class="math">\(\bar{Y}_{t}^{\text{obs}}-\bar{Y}_{c}^{\text{obs}}\)</span>.</p>
+<p>The sampling variance of this estimator is equal to <span class="math">\(\frac{S_{c}^{2}}{N_{c}}+\frac{S_{t}^{2}}{N_{t}}-\frac{S_{tc}^{2}}{N}\)</span>
+where <span class="math">\(S_{c}^{2}\)</span> and <span class="math">\(S_{t}^{2}\)</span> are the variances of <span class="math">\(Y_{i}(0)\)</span> and <span class="math">\(Y_{i}(1)\)</span> respectively, and
+<span class="math">\(S_{tc}^{2}\)</span> is the variance of the unit-level treatment effects. The challenge is that <span class="math">\(S_{tc}^{2}\)</span> is
+impossible to estimate with data from the experiment. The functions below attempt to solve this problem.</p>
+</div></blockquote>
+<p><code class="xref py py-func docutils literal"><span class="pre">jstat.neyman.sampling_variance_neyman()</span></code>:</p>
+<blockquote>
+<div><p>Under constant treatment effects, this function produces an ubiased estimator of the sampling variance for the sample
+average treatment effect. With heterogeneous treatment effects, the estimate will overstate the variance.</p>
+<p>However, this estimator is generally used because it provides an unbiased estimate of the population level average treatment
+effect, which is typically what the researcher is after.</p>
+</div></blockquote>
+<p><code class="xref py py-func docutils literal"><span class="pre">jstat.neyman.ate_sampling_variance_correlated()</span></code>:</p>
+<blockquote>
+<div>If the potential outcomes are perfectly correlated, this provides an unbiased etimate of the samplig variance. If the
+correlation is not perfect, the variance is again upwardly biased, but less so than sampling_variance_neyman().</div></blockquote>
+<p><code class="xref py py-func docutils literal"><span class="pre">jstat.neyman.cte_sampling_variance()</span></code>:</p>
+<blockquote>
+<div>This estimator exploits the fact that <span class="math">\(S_{t}^{2}=S_{c}^{2}\)</span> if the treatment effect is constant. If treatment effects
+are constant, this estimator is preferred to the previous two. Otherwise it should not be used.</div></blockquote>
+<p><code class="xref py py-func docutils literal"><span class="pre">jstat.neyman.ate_confidence_interval()</span></code>:</p>
+<blockquote>
+<div>This function produces a <span class="math">\(1-\alpha\)</span> % confidence interval for the average treatment effect estimate. The user must
+supply an estimate of the sampling variance obtained from one of the previous functions. The confidence interval is
+justified in large samples by the Central Limit Theorem, but is fairly reliable in small samples as well.</div></blockquote>
+<p><code class="xref py py-func docutils literal"><span class="pre">jstat.neyman.t_stat()</span></code>:</p>
+<blockquote>
+<div>The t-statistic produced by this function tests the null hypothesis that the average treatment effect is equal to zero.
+The user must supply a sampling variance from one of the previous functions. A p-value is also returned.</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="modules.html" class="btn btn-neutral float-right" title="jstat" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="fep.html" class="btn btn-neutral" title="Fisher Exact P-Values" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Justin Max.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

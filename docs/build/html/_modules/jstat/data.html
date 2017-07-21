@@ -90,7 +90,8 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../fep.html">Fishers Exact P-Values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fep.html">Fishers Exact P-Values for Randomized Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../neyman.html">Neyman&#8217;s Approach to Randomized Experiments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">J Stat Documentation</a></li>
 </ul>
 
@@ -158,18 +159,72 @@
   <h1>Source code for jstat.data</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+<span class="c1">#file for generating data to test the functions</span>
+
 <div class="viewcode-block" id="gen_constant_treatment_effect"><a class="viewcode-back" href="../../jstat.data.html#jstat.data.gen_constant_treatment_effect">[docs]</a><span class="k">def</span> <span class="nf">gen_constant_treatment_effect</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">mu</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">p</span><span class="p">):</span>
-    <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
-    <span class="n">epsilon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
-    <span class="n">Y</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">W</span><span class="o">*</span><span class="n">c</span> <span class="o">+</span> <span class="n">epsilon</span>
-    <span class="k">return</span> <span class="n">Y</span><span class="p">,</span> <span class="n">W</span></div>
+	<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Generate data with no covariates, binary treatments, and a constant treatment effect. The outcomes are</span>
+<span class="sd">	independently normally distributed with variance 1.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	N : Positive Integer</span>
+<span class="sd">		Mumber of observations in the dataset.</span>
+
+<span class="sd">	mu : float</span>
+<span class="sd">		The average outcome for units which do not receive the treatment.</span>
+<span class="sd">		</span>
+<span class="sd">	c : float</span>
+<span class="sd">		The treatment effect</span>
+<span class="sd">		</span>
+<span class="sd">	p : float between 0 and 1</span>
+<span class="sd">		The proportion of units which receive the treatment.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Y : numpy array</span>
+<span class="sd">		Vector of outcomes.</span>
+<span class="sd">		</span>
+<span class="sd">	W : numpy array</span>
+<span class="sd">		Assignment vector</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
+	<span class="n">epsilon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
+	<span class="n">Y</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">W</span><span class="o">*</span><span class="n">c</span> <span class="o">+</span> <span class="n">epsilon</span>
+	<span class="k">return</span> <span class="n">Y</span><span class="p">,</span> <span class="n">W</span></div>
 	
 <div class="viewcode-block" id="gen_average_treatment_effect"><a class="viewcode-back" href="../../jstat.data.html#jstat.data.gen_average_treatment_effect">[docs]</a><span class="k">def</span> <span class="nf">gen_average_treatment_effect</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">mu</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">p</span><span class="p">):</span>
-    <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
-    <span class="n">epsilon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
-    <span class="n">treatment_effect</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
-    <span class="n">Y</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">W</span><span class="o">*</span><span class="n">treatment_effect</span> <span class="o">+</span> <span class="n">epsilon</span>
-    <span class="k">return</span> <span class="n">Y</span><span class="p">,</span> <span class="n">W</span></div>
+	<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Generate data with no covariates, binary treatments, and a heterogeneous treatment effect. The outcomes are</span>
+<span class="sd">	independently normally distributed with variance 1. Treatment effects also have variance 1.</span>
+<span class="sd">	</span>
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	N : Positive Integer</span>
+<span class="sd">		Mumber of observations in the dataset.</span>
+<span class="sd">	</span>
+<span class="sd">	mu : float</span>
+<span class="sd">		The average outcome for units which do not receive the treatment.</span>
+<span class="sd">		</span>
+<span class="sd">	c : float</span>
+<span class="sd">		The average treatment effect</span>
+<span class="sd">		</span>
+<span class="sd">	p : float between 0 and 1</span>
+<span class="sd">		The proportion of units which receive the treatment.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Y : numpy array</span>
+<span class="sd">		Vector of outcomes.</span>
+<span class="sd">		</span>
+<span class="sd">	W : numpy array</span>
+<span class="sd">		Assignment vector</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
+	<span class="n">epsilon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
+	<span class="n">treatment_effect</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
+	<span class="n">Y</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">W</span><span class="o">*</span><span class="n">treatment_effect</span> <span class="o">+</span> <span class="n">epsilon</span>
+	<span class="k">return</span> <span class="n">Y</span><span class="p">,</span> <span class="n">W</span></div>
 </pre></div>
 
            </div>

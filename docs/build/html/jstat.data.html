@@ -92,7 +92,8 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="fep.html">Fishers Exact P-Values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fep.html">Fishers Exact P-Values for Randomized Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="neyman.html">Neyman&#8217;s Approach to Randomized Experiments</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">J Stat Documentation</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="jstat.html">jstat package</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="jstat.html#submodules">Submodules</a><ul class="current">
@@ -177,12 +178,84 @@
 <dl class="function">
 <dt id="jstat.data.gen_average_treatment_effect">
 <code class="descclassname">jstat.data.</code><code class="descname">gen_average_treatment_effect</code><span class="sig-paren">(</span><em>N</em>, <em>mu</em>, <em>c</em>, <em>p</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/jstat/data.html#gen_average_treatment_effect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#jstat.data.gen_average_treatment_effect" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Generate data with no covariates, binary treatments, and a heterogeneous treatment effect. The outcomes are
+independently normally distributed with variance 1. Treatment effects also have variance 1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>N</strong> : Positive Integer</p>
+<blockquote>
+<div><p>Mumber of observations in the dataset.</p>
+</div></blockquote>
+<p><strong>mu</strong> : float</p>
+<blockquote>
+<div><p>The average outcome for units which do not receive the treatment.</p>
+</div></blockquote>
+<p><strong>c</strong> : float</p>
+<blockquote>
+<div><p>The average treatment effect</p>
+</div></blockquote>
+<p><strong>p</strong> : float between 0 and 1</p>
+<blockquote>
+<div><p>The proportion of units which receive the treatment.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Y</strong> : numpy array</p>
+<blockquote>
+<div><p>Vector of outcomes.</p>
+</div></blockquote>
+<p><strong>W</strong> : numpy array</p>
+<blockquote class="last">
+<div><p>Assignment vector</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="jstat.data.gen_constant_treatment_effect">
 <code class="descclassname">jstat.data.</code><code class="descname">gen_constant_treatment_effect</code><span class="sig-paren">(</span><em>N</em>, <em>mu</em>, <em>c</em>, <em>p</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/jstat/data.html#gen_constant_treatment_effect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#jstat.data.gen_constant_treatment_effect" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Generate data with no covariates, binary treatments, and a constant treatment effect. The outcomes are
+independently normally distributed with variance 1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>N</strong> : Positive Integer</p>
+<blockquote>
+<div><p>Mumber of observations in the dataset.</p>
+</div></blockquote>
+<p><strong>mu</strong> : float</p>
+<blockquote>
+<div><p>The average outcome for units which do not receive the treatment.</p>
+</div></blockquote>
+<p><strong>c</strong> : float</p>
+<blockquote>
+<div><p>The treatment effect</p>
+</div></blockquote>
+<p><strong>p</strong> : float between 0 and 1</p>
+<blockquote>
+<div><p>The proportion of units which receive the treatment.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Y</strong> : numpy array</p>
+<blockquote>
+<div><p>Vector of outcomes.</p>
+</div></blockquote>
+<p><strong>W</strong> : numpy array</p>
+<blockquote class="last">
+<div><p>Assignment vector</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 
